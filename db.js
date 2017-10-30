@@ -19,18 +19,31 @@ const Fingerprint = sequelize.define('fingerprint', {
     }
 });
 
-sequelize.authenticate().then(() =>{
-    module.exports = {
-        saveFingerprint: function(fingerprint, username) {
-            return Fingerprint.create({
-                fingerprint: fingerprint,
-                username: username
-            });
-        },
-        getFingerprint: function(fingerprint) {
-            return Fingerprint.findOne({
-                fingerprint: fingerprint
-            });
+Fingerprint.sync({force: false});
+
+function getFingerprint(fingerprint) {
+    return Fingerprint.findOne({
+      where: {
+        fingerprint: fingerprint
+      }
+    });
+}
+
+function saveFingerprint(data) {
+    return getFingerprint(data.fingerprint).then(function(obj){
+        if(obj) { // update
+          return obj.update(data);
         }
+        else { // insert
+          return Model.create(data);
+        }
+    });
+}
+
+
+module.exports = sequelize.authenticate().then(() =>{
+    return {
+        saveFingerprint: saveFingerprint,
+        getFingerprint: getFingerprint
     };
-})
+});

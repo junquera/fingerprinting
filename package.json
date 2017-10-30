@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "express": "^4.16.2",
     "fingerprintjs2": "^1.5.1",
     "sequelize": "^4.20.1",
     "sqlite3": "^3.1.13"

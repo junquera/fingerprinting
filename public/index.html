@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <script src="/script/fingerprint2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <input id="username" type="text"></input>
+      <button id="save">Save fingerprint</button>
+    </div>
+    <script>
+
+      function get(url, callback){
+        $.get(url, callback);
+      }
+
+      function post(url, data){
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: JSON.stringify(data),
+          contentType: "application/json"
+        });
+      }
+
+      var fp = new Fingerprint2();
+
+      fp.get(function(result, components){
+
+        var fingerprint = result;
+        console.log(fingerprint);
+
+        get('/fingerprint/' + fingerprint, function(data){
+          var username = JSON.parse(data).username;
+          alert("¡Hola " + username + "!");
+        })
+
+        $('#save').click(function(){
+            var username = $('#username')[0].value;
+            post('/fingerprint', {
+              username: username,
+              fingerprint: fingerprint
+            });
+        });
+      });
+
+    </script>
+  </body>
+</html>
