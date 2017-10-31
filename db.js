@@ -35,7 +35,7 @@ function saveFingerprint(data) {
           return obj.update(data);
         }
         else { // insert
-          return Model.create(data);
+          return Fingerprint.create(data);
         }
     });
 }

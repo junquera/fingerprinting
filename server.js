@@ -23,7 +23,7 @@ app.post('/fingerprint', function(req, res){
       }).then(()=> {
         res.status(200);
         res.end();
-      }).catch(()=>{
+      }).catch((e)=>{
         console.error("[*] Error saving fingerprint");
         res.status(500);
         res.end();
@@ -45,11 +45,9 @@ app.get('/fingerprint/:fingerprint', function(req, res){
       res.end(JSON.stringify(fp.dataValues));
     }).catch((e)=>{
       console.error("[*] Error getting fingerprint");
-      console.error(e);
       res.status(500);
       res.end()
     });
-
   } else {
     res.status(400);
     res.end()
